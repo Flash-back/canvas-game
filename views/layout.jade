@@ -1,0 +1,13 @@
+doctype html
+html
+    head
+        title= title
+        link(rel='stylesheet', href='/stylesheets/style.css')
+        block css
+        script(src='https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js')
+        script(src='/socket.io/socket.io.js')
+        script(type='text/javascript').
+            var socket = io.connect('http://localhost');
+        block js
+    body
+        block content
