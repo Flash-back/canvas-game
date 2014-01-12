@@ -4,10 +4,10 @@ block css
     link(rel='stylesheet', href='/stylesheets/estilos.css')
 
 block js
-    script(src='/javascripts/Entidad.js')
-    script(src='/javascripts/Sprites.js')
-    script(src='/javascripts/EntidadPersonaje.js')
     script(src='/javascripts/Juego.js')
+    script(src='/javascripts/Entidad.js')
+    script(src='/javascripts/EntidadPersonaje.js')
+    script(src='/javascripts/Sprites.js')
     script(type='text/javascript').
       var logueado = 0;
       var usuarioDiv;
@@ -74,20 +74,20 @@ block js
         };
 
         $(document).keypress(function(e) {
-          if (logueado === 1){
+          if (logueado === 1 && (e.keyCode == '37'|| e.keyCode == '38'||e.keyCode == '39'||e.keyCode == '40')){
+            e.preventDefault();
             juego.movimiento(e.keyCode);
           }
             
         });
 
         function iniciar(){
-          juego.constructor('contexto');
-          //juego.iniciar();
-          var canvas =  document.getElementById('contexto');
+          
+          //var canvas =  document.getElementById('contexto');
           /*canvas.width=800;
           canvas.height=400;
           canvas.style.backgroundColor="white";*/
-          contexto=canvas.getContext('2d');
+          //contexto=canvas.getContext('2d');
           /*var image = new Image();
           image.src = "images/personaje.png";*/
           personajeDatos = {
@@ -111,7 +111,9 @@ block js
                           'image':'personaje.png'
                         }
                       };
-          console.log(personajeDatos.parado1.x);
+          juego.constructor('contexto');
+          juego.iniciar();
+         /* console.log(personajeDatos.parado1.x);
           var dibujarPersonaje = function(sprite,x,y){
             var imageTemp = new Image();
             imageTemp.src = 'images/'+sprite.image;
@@ -132,7 +134,7 @@ block js
             }
           }
           personajeDibujar(100,100);
-          setInterval(function(){personajeDibujar(100,100)},700);
+          setInterval(function(){personajeDibujar(100,100)},700);*/
         }
 
 

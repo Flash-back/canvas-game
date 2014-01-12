@@ -1,26 +1,22 @@
 function EntidadPersonaje(){
-   // this.velocidadMovimiento=75;
-    this.juego;
-    this.conexto;
-   
-    this.constructor=function(juego,xIni,yIni){
-        //this.constructorBase([Sprites.get("images/personaje.png")],32,32,xIni,yIni);
-        //this.constructorBase("images/personaje.png",32,32,xIni,yIni);
-        //this.juego=juego;
-        //this.dx=-this.velocidadMovimiento;
+
+   this.t=1;
+    this.constructor=function(contexto,xIni,yIni){
+        this.constructorBase(contexto,xIni,yIni);
     };
 
-    /*this.mover=function(delta){
-        if (this.dx<0 && this.x<10)
-        {
-            this.juego.actualizaLogica();
+    this.actualizarDibujo=function(){
+        //this.contexto.clearRect(103,100,27,48);
+        this.contexto.clearRect(this.x+3,this.y,27,48);
+        if (this.t==0) {
+          this.dibujar(personajeDatos.parado1);
+          this.t++;
         }
-        if (this.dx>0 && this.x>juego.getAnchuraCanvas()-(this.ancho+10))
-        {
-            this.juego.actualizaLogica();
+        else{
+           this.dibujar(personajeDatos.parado2);
+           this.t--;
         }
-        this.moverBase(delta);
-    };*/
+    }
 
 }
 EntidadPersonaje.prototype = new Entidad();

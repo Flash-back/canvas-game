@@ -1,18 +1,26 @@
 function Entidad(){
+
     this.x;
     this.y;
+    this.contexto;
    
-    this.ancho;
-    this.alto;
-    this.imagen;
-   
-    this.constructorBase=function(imagenIni,anchoIni, altoIni,xIni,yIni){
+    this.constructorBase=function(contexto,xIni,yIni){
         this.x=xIni;
         this.y=yIni;
+        this.contexto=contexto;
     };
    
-    this.dibujar=function(contexto){
-       /* alert(this.imagen.toString());
-        contexto.drawImage(this.imagen,this.x, this.y, this.ancho, this.alto);*/
+    this.dibujar = function(sprite){
+        var imageTemp = new Image();
+        imageTemp.src = 'images/'+sprite.image;
+        this.contexto.drawImage(imageTemp,sprite.x,sprite.y,sprite.swidth,sprite.sheight,this.x,this.y,sprite.width,sprite.height);
     };
+
+    this.setX= function(value){
+        this.x=value;
+    }
+
+    this.setY= function(value){
+        this.y=value;
+    }
 }
