@@ -14,7 +14,13 @@ block js
       var miUsuarioDiv;
       var miUsuarioDatos;
       var nombre;
-      var juego = new Juego();
+      var juego;
+
+      function preparar(){
+      juego = new Juego();
+      juego.constructor('contexto');
+      }
+      
 
         jQuery(function ($) {
         var setNombreForm = $('.login form');
@@ -31,28 +37,41 @@ block js
         setNombreForm.submit(function(event) {
           $('.login').css( "display", "none" );
           event.preventDefault();
-          console.log("Intento de login")
+          console.log("Logueando...")
           socket.emit('login', $('#nombre').val(), function (data,callback) {
               nombre = $('#nombre').val();
               logueado = 1;
               console.log('Nombre de usuario configurado de modo correcto');
               wrapper.show();
-              iniciar();
           });
         });
         });
         socket.on('anuncio', function (data) {
-          console.log("a");
+          console.log("Usuario conectado");
           $('.messages').append('<p>' + data.message + '</p>');
         });
+
+        socket.on('nuevoUsuario', function (data) {
+          console.log("Usuario conectado");
+          juego.cargarJugador(data);
+        });
+
+
         socket.on('usuarios', function (data) {
           var usuariosConectados = '';
           var imagenUsuario = '';
           for (var i = 0; i < data.length; i++) {
             usuariosConectados += '<li><span>' + data[i]['nombre'] + '</span></li>';
-            imagenUsuario = render(data[i]);
+            if (data[i].nombre==nombre) {
+              miUsuarioDatos=data[i];
+            }else {
+              console.log("a");
+              juego.cargarJugador(data[i]);
+            }
+            
           }
           $('.users ul').empty().append(usuariosConectados);
+          iniciar(miUsuarioDatos,data);
         });
 
         /*socket.on('movimiento', function(data){
@@ -63,15 +82,6 @@ block js
       
         });*/
 
-        function render (usuario) {
-        console.log(usuario);
-          $('#contexto').append('<div class="usuario" id="usuario_'+usuario.id+'">'+usuario.nombre+'</div>');
-         $('#usuario_'+usuario.id).css({'width':'15px','height':'15px','background':'red','margin-left':usuario.x});
-          if (nombre == usuario.nombre) {
-              miUsuarioDatos = usuario;
-              miUsuarioDiv = $('#usuario_'+usuario.id);
-          }
-        };
 
         $(document).keypress(function(e) {
           if (logueado === 1 && (e.keyCode == '37'|| e.keyCode == '38'||e.keyCode == '39'||e.keyCode == '40')){
@@ -81,15 +91,7 @@ block js
             
         });
 
-        function iniciar(){
-          
-          //var canvas =  document.getElementById('contexto');
-          /*canvas.width=800;
-          canvas.height=400;
-          canvas.style.backgroundColor="white";*/
-          //contexto=canvas.getContext('2d');
-          /*var image = new Image();
-          image.src = "images/personaje.png";*/
+        function iniciar(usuario,jugadores){
           personajeDatos = {
                         'parado1': {
                           'x': 26,
@@ -111,30 +113,7 @@ block js
                           'image':'personaje.png'
                         }
                       };
-          juego.constructor('contexto');
-          juego.iniciar();
-         /* console.log(personajeDatos.parado1.x);
-          var dibujarPersonaje = function(sprite,x,y){
-            var imageTemp = new Image();
-            imageTemp.src = 'images/'+sprite.image;
-            contexto.drawImage(imageTemp,sprite.x,sprite.y,sprite.swidth,sprite.sheight,x,y,sprite.width,sprite.height);
-          };
-          var t = 1;
-          var personajeDibujar = function(x,y)
-          {
-            contexto.clearRect(103,100,27,48);
-            if (t==0) {
-              dibujarPersonaje(personajeDatos.parado1,x,y);
-              t++;
-            }
-            else{
-              //contexto.drawImage(image,26,785,64,64,100,100,48,48);
-              dibujarPersonaje(personajeDatos.parado2,x,y);
-              t--;
-            }
-          }
-          personajeDibujar(100,100);
-          setInterval(function(){personajeDibujar(100,100)},700);*/
+          juego.iniciar(usuario,jugadores);
         }
 
 

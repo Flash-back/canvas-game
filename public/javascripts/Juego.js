@@ -2,6 +2,7 @@ function Juego() {
 
 	this.canvas;
 	this.personaje;
+	this.personajes;
 
 	this.constructor=function(idCanvas){
 		this.canvas=document.getElementById(idCanvas);
@@ -11,7 +12,9 @@ function Juego() {
 		this.canvas.style.marginLeft="200px";
 		this.canvas.style.borderRadius="15px";
 		this.contexto=this.canvas.getContext('2d');
+		this.datosPersonaje;
 		this.personaje = new EntidadPersonaje();
+		this.jugadores;
 		/*socket.on('movimiento', function(data){
           if (data.eje == 'x'){
           	personajeDibujar(90,100);
@@ -19,14 +22,37 @@ function Juego() {
      	});*/
 	}
 
-	this.iniciar=function() {
-		this.personaje.constructor(this.contexto,50,10);
-		//this.personaje.dibujar(personajeDatos.parado1);
+	this.iniciar=function(usuario,jugadores) {
+		this.personaje.constructor(this.contexto,usuario.x,usuario.y,usuario.id);
+		this.datosPersonaje=usuario;
 		var temp = this.personaje;
-		setInterval(function(){temp.actualizarDibujo()},700);
+		
+
+		this.jugadores=jugadores;
+		/*var temp2 = this.cargarJugador;
+		this.jugadores.forEach(function(jugador) {
+			if (jugador != usuario){
+		    	temp2(jugador);
+		    }
+		    else {
+		    	console.log("Foreach");
+		    }
+		});*/
+		setInterval(function(){temp.actualizarDibujo(0)},700);
+		//this.personaje.dibujar(personajeDatos.parado1);
 		//personaje = new EntidadPersonaje();
 		//personaje.constructor(this,10,10);
 		//personaje.dibujar(this.contexto);		
+	}
+
+	this.cargarJugador=function(jugador) {
+		console.log("Cargando jugador");
+		console.log(jugador);
+		var tempPersonaje = new EntidadPersonaje();
+		tempPersonaje.constructor(this.contexto,jugador.x,jugador.y,jugador.id);
+		//
+		
+		setInterval(function(){tempPersonaje.actualizarDibujo(1)},700);
 	}
 
 	this.movimiento=function(key) {
@@ -53,28 +79,4 @@ function Juego() {
 		}
 	}
 
-	this.a=function (obj)
-	{
-	  var msg = '';
-
-	  for (var property in obj)
-	  {
-	    if (typeof obj[property] == 'function')
-	    {
-	      var inicio = obj[property].toString().indexOf('function');
-	      var fin = obj[property].toString().indexOf(')')+1;
-	      var propertyValue=obj[property].toString().substring(inicio,fin);
-	      msg +=(typeof obj[property])+' '+property+' : '+propertyValue+' ;\n';
-	    }
-	    else if (typeof obj[property] == 'unknown')
-	    {
-	      msg += 'unknown '+property+' : unknown ;\n';
-	    }
-	    else
-	    {
-	      msg +=(typeof obj[property])+' '+property+' : '+obj[property]+' ;\n';
-	    }
-	  }
-	  return msg;
-	}
 }

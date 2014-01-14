@@ -2,12 +2,14 @@ function Entidad(){
 
     this.x;
     this.y;
+    this.vida;
     this.contexto;
    
     this.constructorBase=function(contexto,xIni,yIni){
         this.x=xIni;
         this.y=yIni;
         this.contexto=contexto;
+        this.vida=100;
     };
    
     this.dibujar = function(sprite){

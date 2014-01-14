@@ -42,14 +42,13 @@ io.sockets.on('connection', function (socket) {
 	socket.on('login', function(data,callback){
 		callback(true);
 		console.log("Logueado "+data);
-		usuario = {'id':usuarios.length,'nombre':data,'vida':100,'x':10,'y':10};
+		var NumAleatorio1 = Math.floor(Math.random()*500+10);
+		var NumAleatorio2 = Math.floor(Math.random()*200+10); 
+		usuario = {'id':usuarios.length,'nombre':data,'vida':100,'x':NumAleatorio1,'y':NumAleatorio2};
 		usuarios.push(usuario);
 		socket.usuario = usuario;
-		io.sockets.emit('usuarios', usuarios);
-		socket.broadcast.emit('anuncio', {
-	        nick: 'system',
-	        message: data + ' conectado' 
-      	});
+		socket.emit('usuarios', usuarios);
+		socket.broadcast.emit('nuevoUsuario', usuario);
 	});
 
 	socket.on('movimiento', function (data){
